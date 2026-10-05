@@ -1,7 +1,7 @@
-# Demo Triase Notaris/PPAT — pendamping awam sampai tuntas
-# Prinsip: jawaban SELALU grounded ke ontology via SPARQL, bukan karangan.
-# Chatbot bertugas mengisi slot sampai lengkap, lalu menutup dengan ceklis siap print.
-# Jalankan: python3 app.py  (CLI)  |  python3 app.py --test  (uji 3 skenario)
+# Demo triase Notaris/PPAT untuk pengguna awam.
+# Prinsip: setiap jawaban diambil dari ontology via SPARQL, bukan karangan.
+# Alur: isi slot sampai lengkap, lalu tutup dengan ceklis siap print.
+# Jalankan: python3 app.py  (CLI)  |  python3 app.py --test  (uji skenario)
 # Opsional Streamlit: streamlit run app_streamlit.py
 import re, sys
 from pathlib import Path
@@ -118,9 +118,9 @@ def sapa_awal(need, info):
              "usaha_pt": "dirikan PT perorangan", "usaha_cv": "dirikan CV",
              "fidusia": "utang dengan jaminan", "wasiat": "buat wasiat",
              "kawin": "atur harta kawin"}.get(need, need)
-    print(f"\nSaya catat kebutuhan Anda: **{judul}**.")
-    print("Saya akan pandu sampai tuntas: cek syarat → ceklis dokumen → instansi & akta → langkah berikutnya.")
-    print("Jawab singkat saja (sudah/belum/ya/tidak/angka). Ketik 'batal' untuk berhenti.\n")
+    print(f"\nKebutuhan tercatat: {judul}.")
+    print("Alur: cek syarat > ceklis dokumen > instansi dan akta > langkah berikutnya.")
+    print("Jawab singkat (sudah/belum/ya/tidak/angka). Ketik 'batal' untuk berhenti.\n")
 
 def tanya_slot(need, jawaban_awal=None):
     data = dict(jawaban_awal or {})
@@ -135,7 +135,7 @@ def tanya_slot(need, jawaban_awal=None):
             return None
         data[key] = j
         if need == "usaha_pt" and key == "pendiri" and j.strip().startswith("2"):
-            print("BOT: Baik, karena pendiri 2+, saya alihkan ke jalur CV/PT biasa.")
+            print("BOT: Pendiri 2 orang atau lebih, dialihkan ke jalur CV/PT biasa.")
             return {"__alih__": "usaha_cv", **data}
     return data
 
@@ -152,7 +152,7 @@ def putusan(need, data):
     return need, info
 
 def cetak_tuntas(need, data, info):
-    print("\n===== HASIL TRIASE (grounded ke ontology) =====")
+    print("\n----- HASIL TRIASE -----")
     print(f"Keperluan   : {need}")
     print(f"Instansi    : {info['lembaga']}")
     print(f"Akta/surat  : {info['akta']}")
@@ -166,22 +166,22 @@ def cetak_tuntas(need, data, info):
     print(f"Perkiraan biaya : {info['biaya']}")
     print("Dasar hukum (umum, konfirmasi ke pejabat): UUJN No.2/2014; aturan PPAT; KUHPerdata/KHI untuk waris; UU Fidusia/PT/Perkawinan sesuai kasus.")
     print("Catatan: ini arahan awal, bukan pengganti Notaris/PPAT. Bawa ceklis ini saat datang.")
-    print("===============================================\n")
+    print("------------------------\n")
 
 def main():
-    print("Halo! Saya pendamping Notaris/PPAT untuk orang awam.")
-    print("Ceritakan keperluan Anda dengan bahasa sehari-hari. Contoh: 'mau jual tanah warisan belum balik nama'.")
+    print("Layanan triase Notaris/PPAT.")
+    print("Ceritakan keperluan dengan bahasa sehari-hari. Contoh: 'mau jual tanah warisan belum balik nama'.")
     cerita = input("Anda: ").strip()
     if not cerita:
-        print("BOT: Ceritanya kosong. Silakan ulangi.")
+        print("BOT: Cerita kosong. Ulangi.")
         return
     need = deteksi(cerita)
     if need == "usaha_pt":
-        print("BOT: Untuk usaha, saya perlu pastikan dulu jumlah pendirinya.")
+        print("BOT: Untuk usaha, pastikan dulu jumlah pendirinya.")
     sapa_awal(need, None)
     data = tanya_slot(need)
     if data is None:
-        print("BOT: Baik, berhenti. Kapan pun bisa mulai lagi.")
+        print("BOT: Sesi dibatalkan.")
         return
     if "__alih__" in data:
         need = data.pop("__alih__")
@@ -192,16 +192,16 @@ def main():
         data = data2
     need_fix, info = putusan(need, data)
     if info is None:
-        print("BOT: Maaf, data ontology tidak ketemu. Coba ceritakan ulang.")
+        print("BOT: Data tidak ditemukan di ontology. Ceritakan ulang.")
         return
     cetak_tuntas(need_fix, data, info)
-    print("BOT: Apakah masih ada yang kurang jelas? (tulis pertanyaan / 'selesai')")
+    print("BOT: Ada yang kurang jelas? (tulis pertanyaan / 'selesai')")
     while True:
         j = input("Anda: ").strip().lower()
         if j in ("selesai", "cukup", "tidak", "ok"):
-            print("BOT: Tuntas. Simpan/print hasil di atas untuk dibawa ke pejabat. Semoga lancar!")
+            print("BOT: Sesi selesai. Simpan hasil di atas untuk dibawa ke pejabat.")
             break
-        print("BOT: Untuk detail itu, patokannya tetap ceklis di atas. Bawa dokumennya, tanyakan ke pejabat yang tercantum. Ada lagi? ('selesai' untuk tutup)")
+        print("BOT: Patokannya tetap ceklis di atas. Bawa dokumennya, tanyakan ke pejabat yang tercantum. ('selesai' untuk tutup)")
 
 def test():
     cases = [
