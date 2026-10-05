@@ -1,0 +1,3 @@
+rdflib>=7.0
+# streamlit opsional untuk UI:
+# streamlit>=1.30
