@@ -17,3 +17,6 @@ Thumbs.db
 # Protege backup
 *.bak
 *~
+
+# Protege
+catalog-v001.xml
