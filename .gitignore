@@ -5,6 +5,12 @@ __pycache__/
 .venv/
 venv/
 
+# Hasil generate notaris/ (selalu bisa dibangun ulang dari .ttl)
+data/verbalized.jsonl
+
+# Rahasia
+.env
+
 # Streamlit
 .streamlit/
 

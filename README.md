@@ -13,12 +13,15 @@ bukan pengguna. Validasi wawancara notaris opsional menyusul bila diminta dosen.
 - `docs/EVALUASI-CQ.md` — hasil uji aktual.
 - `demo/app.py` — chatbot CLI solution-oriented (slot-filling + grounding SPARQL
   + ceklis akhir). Bukan sekadar Q&A: menolak tutup sebelum slot lengkap.
+- `notaris/` — lapisan baca ontology: parser SWRL, verbalisasi ke bahasa awam.
+- `notaris/verbalisasi.py` — triple + aturan -> kalimat, hasilnya `data/verbalized.jsonl`.
 
 ## Cara pakai cepat
 1. Protege: buka `ontology/notaris-triage.ttl`, nyalakan HermiT, coba Queries CQ.
 2. Uji otomatis: `python3 demo/app.py --test` (butuh `pip install --break-system-packages rdflib`)
 3. Chatbot: `python3 demo/app.py`, contoh input: `mau jual tanah warisan belum balik nama`
 4. Streamlit (opsional): `streamlit run demo/app_streamlit.py`
+5. Korpus verbalisasi: `python3 -m notaris.verbalisasi` (tulis) atau `--cek` (ringkas)
 
 ## Beda dari referensi
 - vs LexID (Muninggar 2023): LexID = retrieval 20rb regulasi; ini = triase
