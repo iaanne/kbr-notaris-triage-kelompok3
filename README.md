@@ -13,8 +13,8 @@ bukan pengguna. Validasi wawancara notaris opsional menyusul bila diminta dosen.
 - `docs/EVALUASI-CQ.md` — hasil uji aktual.
 - `demo/app.py` — chatbot CLI solution-oriented (slot-filling + grounding SPARQL
   + ceklis akhir). Bukan sekadar Q&A: menolak tutup sebelum slot lengkap.
-- `notaris/` — lapisan baca ontology: parser SWRL, verbalisasi ke bahasa awam.
-- `notaris/verbalisasi.py` — triple + aturan -> kalimat, hasilnya `data/verbalized.jsonl`.
+- `notaris/` lapisan baca ontology: parser SWRL dan verbalisasi ke bahasa awam.
+- `notaris/verbalisasi.py` triple + aturan -> kalimat, hasilnya `data/verbalized.jsonl`.
 
 ## Cara pakai cepat
 1. Protege: buka `ontology/notaris-triage.ttl`, nyalakan HermiT, coba Queries CQ.
