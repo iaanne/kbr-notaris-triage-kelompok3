@@ -14,7 +14,8 @@ Jika dosen meminta, tambah lembar validasi notaris belakangan.
 | CV | KUHD + AHU pendaftaran badan usaha | AktaCV | (ABox) | CQ5 | kasus_cv |
 | Fidusia motor | UU 42/1999 fidusia wajib akta notaris + daftar AHU | AktaFidusia, perluDaftarDi AHU | R6 | CQ6 | kasus_fidusia_motor |
 | Wasiat | KUHPerdata wasiat; UUJN akta wasiat; daftar wasiat Kemenkumham | AktaWasiat | R7 | CQ7 | kasus_wasiat |
-| Pisah harta | UU 1/1974 jo. MK 69/2015 bisa dibuat sebelum/sesudah nikah; catat Dukcapil | AktaPerjanjianKawin | (ABox+R7 analog) | CQ8 | kasus_kawin |
+| Pisah harta | UU 1/1974 jo. MK 69/2015 bisa dibuat sebelum/sesudah nikah; catat Dukcapil | AktaPerjanjianKawin | R8 | CQ8 | kasus_kawin |
+| Kredit bank jaminan tanah | UUHT 4/1996: APHT di PPAT + daftar BPN; SKMHT hanya kuasa pendahulu yg wajib disusul APHT | AktaHakTanggungan, SuratKuasaMembebankan | — | — | akta_APHT, akta_SKMHT |
 | Kelengkapan & biaya | SOP umum kantor notaris/PPAT + PNBP AHU/BPN | sudahPunyaDokumen, perkiraanWaktu/Biaya | — | CQ9, CQ10 | semua kasus |
 
 Relasi LexID: kelas AturanHukum + properti terkaitAturan (transitive) meniru pola

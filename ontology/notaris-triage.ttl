@@ -214,8 +214,18 @@ swrl:propertyPredicate rdf:type owl:AnnotationProperty .
 
 ###  http://www.semanticweb.org/iaanne/ontologies/2026/notaris-triage#penjelasanAwam
 :penjelasanAwam rdf:type owl:DatatypeProperty ;
-                rdfs:domain owl:Thing ;
+                rdfs:domain [ rdf:type owl:Class ;
+                              owl:unionOf ( :Akta
+                                            :AturanHukum
+                                            :JenisTransaksi
+                                            :KomponenBiaya
+                                            :Lembaga
+                                            :ObjekHukum
+                                            :StatusPenanganan
+                                          )
+                            ] ;
                 rdfs:range xsd:string ;
+                rdfs:comment "Domain dibatasi union 7 kelas yang memang punya penjelasan awam — tidak seumum owl:Thing, tidak sesempit satu kelas."@id ;
                 rdfs:label "penjelasan awam"@id .
 
 
@@ -310,10 +320,18 @@ swrl:propertyPredicate rdf:type owl:AnnotationProperty .
                      rdfs:label "Akta perjanjian kawin"@id .
 
 
-###  http://www.semanticweb.org/iaanne/ontologies/2026/notaris-triage#AktaTanggungan
-:AktaTanggungan rdf:type owl:Class ;
-                rdfs:subClassOf :AktaJaminan ;
-                rdfs:label "Akta tanggungan (SKMHT/APHT)"@id .
+###  http://www.semanticweb.org/iaanne/ontologies/2026/notaris-triage#AktaHakTanggungan
+:AktaHakTanggungan rdf:type owl:Class ;
+                   rdfs:subClassOf :AktaJaminan ;
+                   rdfs:comment "Akta POKOK pembebanan Hak Tanggungan atas tanah (UUHT No.4/1996): dibuat di hadapan PPAT dan wajib didaftarkan ke BPN. Berbeda dengan SKMHT yang hanya kuasa pendahulunya."@id ;
+                   rdfs:label "Akta Pemberian Hak Tanggungan (APHT)"@id .
+
+
+###  http://www.semanticweb.org/iaanne/ontologies/2026/notaris-triage#SuratKuasaMembebankan
+:SuratKuasaMembebankan rdf:type owl:Class ;
+                       rdfs:subClassOf :Akta ;
+                       rdfs:comment "SKMHT BUKAN akta jaminan: kuasa otentik untuk memasang APHT, dibuat di hadapan Notaris/PPAT, dan wajib diikuti APHT dalam batas waktu UUHT. SKMHT sendiri tidak didaftarkan ke BPN."@id ;
+                       rdfs:label "SKMHT — kuasa membebankan Hak Tanggungan"@id .
 
 
 ###  http://www.semanticweb.org/iaanne/ontologies/2026/notaris-triage#AktaUsaha
@@ -440,9 +458,10 @@ swrl:propertyPredicate rdf:type owl:AnnotationProperty .
 
 ###  http://www.semanticweb.org/iaanne/ontologies/2026/notaris-triage#akta_APHT
 :akta_APHT rdf:type owl:NamedIndividual ,
-                    :AktaTanggungan ;
+                    :AktaHakTanggungan ;
+           :berdasarPada :aturan_uuht ;
            :perluDaftarDi :lem_bpn ;
-           :penjelasanAwam "Akta tanggungan untuk kredit bank dengan jaminan tanah."@id ;
+           :penjelasanAwam "Akta pokok jaminan tanah untuk kredit bank: dibuat di PPAT lalu didaftar ke BPN. Didahului SKMHT bila pemilik tidak hadir."@id ;
            rdfs:label "APHT"@id .
 
 
@@ -483,9 +502,9 @@ swrl:propertyPredicate rdf:type owl:AnnotationProperty .
 
 ###  http://www.semanticweb.org/iaanne/ontologies/2026/notaris-triage#akta_SKMHT
 :akta_SKMHT rdf:type owl:NamedIndividual ,
-                     :AktaTanggungan ;
-            :perluDaftarDi :lem_bpn ;
-            :penjelasanAwam "Kuasa untuk pasang tanggungan ke bank."@id ;
+                     :SuratKuasaMembebankan ;
+            :berdasarPada :aturan_uuht ;
+            :penjelasanAwam "Kuasa otentik agar bank/notaris bisa memasang APHT. Bukan jaminan itu sendiri dan tidak didaftar ke BPN; wajib disusul APHT."@id ;
             rdfs:label "SKMHT"@id .
 
 
@@ -555,6 +574,13 @@ swrl:propertyPredicate rdf:type owl:AnnotationProperty .
 :aturan_tanah rdf:type owl:NamedIndividual ,
                        :AturanHukum ;
               rdfs:label "Aturan tanah (UUPA + PP 18/2021)"@id .
+
+
+###  http://www.semanticweb.org/iaanne/ontologies/2026/notaris-triage#aturan_uuht
+:aturan_uuht rdf:type owl:NamedIndividual ,
+                      :AturanHukum ;
+             :penjelasanAwam "UUHT No.4/1996: APHT dibuat di PPAT dan didaftar ke BPN; SKMHT hanya kuasa pendahulu yang wajib disusul APHT."@id ;
+             rdfs:label "UUHT No.4/1996"@id .
 
 
 ###  http://www.semanticweb.org/iaanne/ontologies/2026/notaris-triage#aturan_uujn
@@ -1089,227 +1115,122 @@ swrl:propertyPredicate rdf:type owl:AnnotationProperty .
               rdfs:label "wasiat"@id .
 
 
-[ swrl:argument1 :var_k ;
-  swrl:classPredicate :KasusTriage
-] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :dok_SKWaris ;
-   swrl:propertyPredicate :butuhDokumen
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :status_belumLengkap ;
-   swrl:propertyPredicate :berstatus
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 "false"^^xsd:boolean ;
-   swrl:propertyPredicate :adaSKWaris
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :trans_warisJual ;
-   swrl:propertyPredicate :punyaJenis
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:classPredicate :KasusTriage
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :akta_AJB ;
-   swrl:propertyPredicate :butuhAkta
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :lem_ppat ;
-   swrl:propertyPredicate :ditanganiOleh
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 "true"^^xsd:boolean ;
-   swrl:propertyPredicate :adaSepakat
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 "true"^^xsd:boolean ;
-   swrl:propertyPredicate :adaSertifikat
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :obj_tanahSHM ;
-   swrl:propertyPredicate :punyaObjek
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :trans_jualBeli ;
-   swrl:propertyPredicate :punyaJenis
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:classPredicate :KasusTriage
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :akta_wasiat ;
-   swrl:propertyPredicate :butuhAkta
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :lem_notaris ;
-   swrl:propertyPredicate :ditanganiOleh
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 "true"^^xsd:boolean ;
-   swrl:propertyPredicate :cakapHukum
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :trans_wasiat ;
-   swrl:propertyPredicate :punyaJenis
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:classPredicate :KasusTriage
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :akta_fidusia ;
-   swrl:propertyPredicate :butuhAkta
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :lem_notaris ;
-   swrl:propertyPredicate :ditanganiOleh
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :obj_kendaraan ;
-   swrl:propertyPredicate :punyaObjek
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :trans_utangJaminan ;
-   swrl:propertyPredicate :punyaJenis
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:classPredicate :KasusTriage
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :lem_ahu ;
-   swrl:propertyPredicate :ditanganiOleh
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :akta_PTperorangan ;
-   swrl:propertyPredicate :butuhAkta
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 "true"^^xsd:boolean ;
-   swrl:propertyPredicate :modalKecil
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 1 ;
-   swrl:propertyPredicate :jumlahPendiri
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :trans_dirikanUsaha ;
-   swrl:propertyPredicate :punyaJenis
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:classPredicate :KasusTriage
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :biaya_BPHTB ;
-   swrl:propertyPredicate :dikenaiBiaya
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :akta_hibah ;
-   swrl:propertyPredicate :butuhAkta
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :lem_ppat ;
-   swrl:propertyPredicate :ditanganiOleh
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :obj_tanahSHM ;
-   swrl:propertyPredicate :punyaObjek
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :trans_hibah ;
-   swrl:propertyPredicate :punyaJenis
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:classPredicate :KasusTriage
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :status_rujukPengadilan ;
-   swrl:propertyPredicate :berstatus
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :lem_pengadilan ;
-   swrl:propertyPredicate :ditanganiOleh
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 "false"^^xsd:boolean ;
-   swrl:propertyPredicate :adaSepakat
- ] .
-
-[ swrl:argument1 :var_k ;
-   swrl:argument2 :trans_warisBagi ;
-   swrl:propertyPredicate :punyaJenis
- ] .
-
 #################################################################
-#    Annotations
+#    SWRL rules R1-R8 (ditulis manual; jangan biarkan Protege
+#    menulis ulang bagian ini — validasi ulang setelah save)
 #################################################################
 
-:rule_R1 swrl:body [ ] ;
-swrl:head [ ] .
+:rule_R1 a swrl:Imp ;
+    rdfs:label "R1 — Jual beli tanah bersertifikat dan sepakat wajib PPAT AJB"@id ;
+    rdfs:comment "Jika jenis=jualBeli dan objek=tanahSHM dan ada sertifikat dan sepakat maka arahkan ke PPAT dengan AJB."@id ;
+    swrl:body (
+        [ a swrl:ClassAtom ; swrl:classPredicate :KasusTriage ; swrl:argument1 :var_k ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :punyaJenis ; swrl:argument1 :var_k ; swrl:argument2 :trans_jualBeli ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :punyaObjek ; swrl:argument1 :var_k ; swrl:argument2 :obj_tanahSHM ]
+        [ a swrl:DatavaluedPropertyAtom ; swrl:propertyPredicate :adaSertifikat ; swrl:argument1 :var_k ; swrl:argument2 true ]
+        [ a swrl:DatavaluedPropertyAtom ; swrl:propertyPredicate :adaSepakat ; swrl:argument1 :var_k ; swrl:argument2 true ]
+    ) ;
+    swrl:head (
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :ditanganiOleh ; swrl:argument1 :var_k ; swrl:argument2 :lem_ppat ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :butuhAkta ; swrl:argument1 :var_k ; swrl:argument2 :akta_AJB ]
+    ) .
 
+:rule_R2 a swrl:Imp ;
+    rdfs:label "R2 — Warisan tanpa SKW berarti belum lengkap"@id ;
+    rdfs:comment "Jika jenis=warisJual dan belum ada SKW maka status belum lengkap dan butuh dokumen SKW."@id ;
+    swrl:body (
+        [ a swrl:ClassAtom ; swrl:classPredicate :KasusTriage ; swrl:argument1 :var_k ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :punyaJenis ; swrl:argument1 :var_k ; swrl:argument2 :trans_warisJual ]
+        [ a swrl:DatavaluedPropertyAtom ; swrl:propertyPredicate :adaSKWaris ; swrl:argument1 :var_k ; swrl:argument2 false ]
+    ) ;
+    swrl:head (
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :berstatus ; swrl:argument1 :var_k ; swrl:argument2 :status_belumLengkap ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :butuhDokumen ; swrl:argument1 :var_k ; swrl:argument2 :dok_SKWaris ]
+    ) .
 
-:rule_R2 swrl:body [ ] ;
-swrl:head [ ] .
+:rule_R3 a swrl:Imp ;
+    rdfs:label "R3 — Waris tidak sepakat rujuk pengadilan"@id ;
+    rdfs:comment "Jika jenis=warisBagi dan para pihak tidak sepakat maka rujuk pengadilan/mediasi."@id ;
+    swrl:body (
+        [ a swrl:ClassAtom ; swrl:classPredicate :KasusTriage ; swrl:argument1 :var_k ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :punyaJenis ; swrl:argument1 :var_k ; swrl:argument2 :trans_warisBagi ]
+        [ a swrl:DatavaluedPropertyAtom ; swrl:propertyPredicate :adaSepakat ; swrl:argument1 :var_k ; swrl:argument2 false ]
+    ) ;
+    swrl:head (
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :ditanganiOleh ; swrl:argument1 :var_k ; swrl:argument2 :lem_pengadilan ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :berstatus ; swrl:argument1 :var_k ; swrl:argument2 :status_rujukPengadilan ]
+    ) .
 
+:rule_R4 a swrl:Imp ;
+    rdfs:label "R4 — Hibah tanah ke PPAT dengan BPHTB"@id ;
+    rdfs:comment "Jika jenis=hibah dan objek=tanahSHM maka ke PPAT dengan akta hibah dan kena BPHTB."@id ;
+    swrl:body (
+        [ a swrl:ClassAtom ; swrl:classPredicate :KasusTriage ; swrl:argument1 :var_k ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :punyaJenis ; swrl:argument1 :var_k ; swrl:argument2 :trans_hibah ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :punyaObjek ; swrl:argument1 :var_k ; swrl:argument2 :obj_tanahSHM ]
+    ) ;
+    swrl:head (
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :ditanganiOleh ; swrl:argument1 :var_k ; swrl:argument2 :lem_ppat ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :butuhAkta ; swrl:argument1 :var_k ; swrl:argument2 :akta_hibah ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :dikenaiBiaya ; swrl:argument1 :var_k ; swrl:argument2 :biaya_BPHTB ]
+    ) .
 
-:rule_R3 swrl:body [ ] ;
-swrl:head [ ] .
+:rule_R5 a swrl:Imp ;
+    rdfs:label "R5 — Usaha 1 pendiri modal kecil ke PT perorangan"@id ;
+    rdfs:comment "Jika jenis=dirikanUsaha dengan 1 pendiri dan modal kecil maka ke PT perorangan via AHU."@id ;
+    swrl:body (
+        [ a swrl:ClassAtom ; swrl:classPredicate :KasusTriage ; swrl:argument1 :var_k ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :punyaJenis ; swrl:argument1 :var_k ; swrl:argument2 :trans_dirikanUsaha ]
+        [ a swrl:DatavaluedPropertyAtom ; swrl:propertyPredicate :jumlahPendiri ; swrl:argument1 :var_k ; swrl:argument2 1 ]
+        [ a swrl:DatavaluedPropertyAtom ; swrl:propertyPredicate :modalKecil ; swrl:argument1 :var_k ; swrl:argument2 true ]
+    ) ;
+    swrl:head (
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :butuhAkta ; swrl:argument1 :var_k ; swrl:argument2 :akta_PTperorangan ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :ditanganiOleh ; swrl:argument1 :var_k ; swrl:argument2 :lem_ahu ]
+    ) .
 
+:rule_R6 a swrl:Imp ;
+    rdfs:label "R6 — Utang jaminan kendaraan ke notaris fidusia"@id ;
+    rdfs:comment "Jika jenis=utangJaminan dan objek=kendaraan maka ke notaris dengan akta fidusia."@id ;
+    swrl:body (
+        [ a swrl:ClassAtom ; swrl:classPredicate :KasusTriage ; swrl:argument1 :var_k ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :punyaJenis ; swrl:argument1 :var_k ; swrl:argument2 :trans_utangJaminan ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :punyaObjek ; swrl:argument1 :var_k ; swrl:argument2 :obj_kendaraan ]
+    ) ;
+    swrl:head (
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :ditanganiOleh ; swrl:argument1 :var_k ; swrl:argument2 :lem_notaris ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :butuhAkta ; swrl:argument1 :var_k ; swrl:argument2 :akta_fidusia ]
+    ) .
 
-:rule_R4 swrl:body [ ] ;
-swrl:head [ ] .
+:rule_R7 a swrl:Imp ;
+    rdfs:label "R7 — Wasiat cakap hukum ke notaris"@id ;
+    rdfs:comment "Jika jenis=wasiat dan pemberi cakap hukum maka ke notaris dengan akta wasiat."@id ;
+    swrl:body (
+        [ a swrl:ClassAtom ; swrl:classPredicate :KasusTriage ; swrl:argument1 :var_k ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :punyaJenis ; swrl:argument1 :var_k ; swrl:argument2 :trans_wasiat ]
+        [ a swrl:DatavaluedPropertyAtom ; swrl:propertyPredicate :cakapHukum ; swrl:argument1 :var_k ; swrl:argument2 true ]
+    ) ;
+    swrl:head (
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :ditanganiOleh ; swrl:argument1 :var_k ; swrl:argument2 :lem_notaris ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :butuhAkta ; swrl:argument1 :var_k ; swrl:argument2 :akta_wasiat ]
+    ) .
 
+:rule_R8 a swrl:Imp ;
+    rdfs:label "R8 — Atur harta kawin sepakat ke notaris"@id ;
+    rdfs:comment "Jika jenis=kawinHarta dan cakap hukum dan pasangan sepakat maka ke notaris dengan akta perjanjian kawin."@id ;
+    swrl:body (
+        [ a swrl:ClassAtom ; swrl:classPredicate :KasusTriage ; swrl:argument1 :var_k ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :punyaJenis ; swrl:argument1 :var_k ; swrl:argument2 :trans_kawinHarta ]
+        [ a swrl:DatavaluedPropertyAtom ; swrl:propertyPredicate :cakapHukum ; swrl:argument1 :var_k ; swrl:argument2 true ]
+        [ a swrl:DatavaluedPropertyAtom ; swrl:propertyPredicate :adaSepakat ; swrl:argument1 :var_k ; swrl:argument2 true ]
+    ) ;
+    swrl:head (
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :ditanganiOleh ; swrl:argument1 :var_k ; swrl:argument2 :lem_notaris ]
+        [ a swrl:IndividualPropertyAtom ; swrl:propertyPredicate :butuhAkta ; swrl:argument1 :var_k ; swrl:argument2 :akta_kawin ]
+    ) .
 
-:rule_R5 swrl:body [ ] ;
-swrl:head [ ] .
-
-
-:rule_R6 swrl:body [ ] ;
-swrl:head [ ] .
-
-
-:rule_R7 swrl:body [ ] ;
-swrl:head [ ] .
-
-
-:var_k rdfs:label "kasus" .
+:var_k a swrl:Variable ;
+    rdfs:label "kasus"@id .
 
 
 #################################################################
@@ -1319,11 +1240,12 @@ swrl:head [ ] .
 [ rdf:type owl:AllDisjointClasses ;
   owl:members ( :AktaBagiWaris
                 :AktaFidusia
+                :AktaHakTanggungan
                 :AktaHibahTanah
                 :AktaJualBeli
                 :AktaPerjanjianKawin
-                :AktaTanggungan
                 :AktaWasiat
+                :SuratKuasaMembebankan
               )
 ] .
 
@@ -1343,54 +1265,5 @@ swrl:head [ ] .
                 :WargaAwam
               )
 ] .
-
-
-#################################################################
-#    Rules
-#################################################################
-
-[ rdfs:comment "Jika jenis=jualBeli dan objek=tanahSHM dan ada sertifikat dan sepakat maka arahkan ke PPAT dengan AJB."@id ;
-  rdfs:label "R1 — Jual beli tanah bersertifikat dan sepakat wajib PPAT AJB"@id ;
-  rdf:type swrl:Imp ;
-  swrl:body rdf:nil ;
-  swrl:head rdf:nil
-] .
-
-[ rdfs:comment "Jika jenis=warisJual dan belum ada SKW maka status belum lengkap dan butuh dokumen SKW."@id ;
-   rdfs:label "R2 — Warisan tanpa SKW berarti belum lengkap"@id ;
-   rdf:type swrl:Imp ;
-   swrl:body rdf:nil ;
-   swrl:head rdf:nil
- ] .
-
-[ rdfs:label "R3 — Waris tidak sepakat rujuk pengadilan"@id ;
-   rdf:type swrl:Imp ;
-   swrl:body rdf:nil ;
-   swrl:head rdf:nil
- ] .
-
-[ rdfs:label "R4 — Hibah tanah ke PPAT dengan BPHTB"@id ;
-   rdf:type swrl:Imp ;
-   swrl:body rdf:nil ;
-   swrl:head rdf:nil
- ] .
-
-[ rdfs:label "R5 — Usaha 1 pendiri modal kecil ke PT perorangan"@id ;
-   rdf:type swrl:Imp ;
-   swrl:body rdf:nil ;
-   swrl:head rdf:nil
- ] .
-
-[ rdfs:label "R6 — Utang jaminan bergerak ke notaris fidusia"@id ;
-   rdf:type swrl:Imp ;
-   swrl:body rdf:nil ;
-   swrl:head rdf:nil
- ] .
-
-[ rdfs:label "R7 — Wasiat dan atur harta kawin ke notaris"@id ;
-   rdf:type swrl:Imp ;
-   swrl:body rdf:nil ;
-   swrl:head rdf:nil
- ] .
 
 ###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

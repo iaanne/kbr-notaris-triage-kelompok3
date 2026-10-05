@@ -31,3 +31,13 @@
 - Tambah kasus bila dosen minta (mis. HGB, waris Islam vs perdata dipisah).
 - Lembar validasi notaris (opsional, bila diminta).
 - Laporan akhir + slide.
+
+## Build fix — presisi model (hari ini)
+1. Domain/range: diverifikasi 16/16 object property + 10/10 data property lengkap;
+   `penjelasanAwam` diperketat dari `owl:Thing` menjadi union 7 kelas pemakai.
+2. R7 diluruskan (wasiat saja) + R8 baru untuk perjanjian kawin → 8 SWRL;
+   body rule yang terlepas saat save Protege dibangun ulang dari nol.
+3. SKMHT/APHT dipisah presisi hukum (UUHT 4/1996): `AktaHakTanggungan`
+   (akta pokok, PPAT, daftar BPN) vs `SuratKuasaMembebankan` (kuasa
+   pendahulu, tidak didaftar, wajib disusul APHT); tambah `aturan_uuht`.
+   Verifikasi: 1007 triple, 8 SWRL, CQ 10/10, demo 8/8, RL expand OK.

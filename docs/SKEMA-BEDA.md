@@ -15,7 +15,7 @@ evaluasi F1 retrieval. Tidak ada triase, tidak ada akta privat/PPAT.
 | `hasLegalBasis`, `amends`, `repeals`, `implements` | `butuhAkta`, `ditanganiOleh`, `butuhDokumen`, `berstatus`, `saranLangkah` | Relasi dokumen vs relasi kebutuhan→solusi |
 | `Person/Office/City`, PlaceOfPromulgation | `Tokoh` (WargaAwam/PejabatNotaris/PejabatPPAT/Saksi), `Lembaga` (Notaris/PPAT/Pengadilan/BPN/AHU/Dukcapil) | Metadata pengesahan vs aktor penanganan |
 | Query: isi pasal / status amandemen | Query CQ1–CQ10: instansi + akta + kurang dokumen + estimasi | Retrieval vs triase tuntas |
-| Tidak ada SWRL triase | 7 SWRL R1–R7 peristiwa→akta→status | Tidak ada inferensi kasus di LexID |
+| Tidak ada SWRL triase | 8 SWRL R1–R8 peristiwa→akta→status | Tidak ada inferensi kasus di LexID |
 
 ## 2. vs Loutas et al. 2011 (SemanticGov Portal)
 Loutas = portal layanan publik umum (SIM, chamber of commerce),

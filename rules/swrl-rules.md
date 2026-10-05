@@ -31,11 +31,15 @@ MAKA butuhAkta(?k, PTperorangan) ∧ ditanganiOleh(?k, AHU)
 JIKA KasusTriage(?k) ∧ punyaJenis(?k, utangJaminan) ∧ punyaObjek(?k, kendaraan)
 MAKA ditanganiOleh(?k, Notaris) ∧ butuhAkta(?k, fidusia)
 
-## R7 — Wasiat cakap hukum → notaris + wasiat (kawin: analog, lihat ontology)
+## R7 — Wasiat cakap hukum → notaris + wasiat
 JIKA KasusTriage(?k) ∧ punyaJenis(?k, wasiat) ∧ cakapHukum(?k, true)
 MAKA ditanganiOleh(?k, Notaris) ∧ butuhAkta(?k, wasiat)
-Catatan: perjanjian kawin mengikuti pola sama (notaris + catat Dukcapil),
-diwakili individu kasus_kawin dan diuji CQ8.
+## R8 — Atur harta kawin sepakat → notaris + perjanjian kawin
+JIKA KasusTriage(?k) ∧ punyaJenis(?k, kawinHarta) ∧ cakapHukum(?k, true)
+     ∧ adaSepakat(?k, true)
+MAKA ditanganiOleh(?k, Notaris) ∧ butuhAkta(?k, perjanjianKawin)
 
 Versi mesin (SWRL RDF) ada di ontology/notaris-triage.ttl sebagai swrl:Imp
-rule_R1..rule_R7 — bisa dibuka di Protege via tab SWRL.
+rule_R1..rule_R8 — bisa dibuka di Protege via tab SWRL.
+Catatan: bila file di-save ulang dari Protege, body rule bisa terlepas
+(Protege tidak round-trip swrl:Imp Turtle) — kembalikan dari git bila terjadi.

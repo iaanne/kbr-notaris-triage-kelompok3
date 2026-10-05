@@ -1,5 +1,5 @@
 # Evaluasi 10 CQ — hasil aktual (rdflib, 2026-10-05)
-Ontology: ontology/notaris-triage.ttl (849 triple). Semua query mengembalikan baris.
+Ontology: ontology/notaris-triage.ttl (1007 triple, 8 SWRL). Semua query mengembalikan baris.
 
 | CQ | File | Hasil |
 |---|---|---|
@@ -16,4 +16,4 @@ Ontology: ontology/notaris-triage.ttl (849 triple). Semua query mengembalikan ba
 
 Cara ulang: `python3 demo/app.py --test`
 Buka di Protege: File → Open → notaris-triage.ttl; jalankan HermiT via Reasoner;
-uji SPARQL via tab SPARQL; aturan via tab SWRL (rule_R1..R7).
+uji SPARQL via tab SPARQL; aturan via tab SWRL (rule_R1..R8).

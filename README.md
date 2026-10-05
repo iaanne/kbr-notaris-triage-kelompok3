@@ -4,10 +4,10 @@ Notaris/PPAT diposisikan sebagai sumber pengetahuan (desk research regulasi),
 bukan pengguna. Validasi wawancara notaris opsional menyusul bila diminta dosen.
 
 ## Isi
-- `ontology/notaris-triage.ttl` — OWL DL (30 kelas, 16 object property, 10 data property,
-  9 kasus ABox, 7 aturan SWRL sebagai swrl:Imp). Dibuka di Protege.
+- `ontology/notaris-triage.ttl` — OWL DL (31 kelas + 1 union, 16 object property, 10 data property,
+  9 kasus ABox, 8 aturan SWRL sebagai swrl:Imp). Dibuka di Protege.
 - `queries/cq01..cq10.rq` — 10 SPARQL untuk 10 competency questions.
-- `rules/swrl-rules.md` — 7 aturan versi manusia + sumber pasal.
+- `rules/swrl-rules.md` — 8 aturan versi manusia + sumber pasal.
 - `docs/TRACEABILITY.md` — pasal → ontology → rule → CQ.
 - `docs/SKEMA-BEDA.md` — bukti beda skema vs LexID/Loutas/B-Team3.
 - `docs/EVALUASI-CQ.md` — hasil uji aktual.
