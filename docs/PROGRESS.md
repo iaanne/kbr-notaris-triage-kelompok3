@@ -40,4 +40,20 @@
 3. SKMHT/APHT dipisah presisi hukum (UUHT 4/1996): `AktaHakTanggungan`
    (akta pokok, PPAT, daftar BPN) vs `SuratKuasaMembebankan` (kuasa
    pendahulu, tidak didaftar, wajib disusul APHT); tambah `aturan_uuht`.
-   Verifikasi: 1007 triple, 8 SWRL, CQ 10/10, demo 8/8, RL expand OK.
+   Verifikasi: 1028 triple, 8 SWRL, CQ 10/10, demo 8/8, RL expand OK.
+
+## Build fix — cakupan penjelasan awam (hari ini)
+1. `penjelasanAwam` naik 35 → 56 triple. Semua tambahan dijaga tetap di dalam
+   domain yang sudah ada (union 7 kelas: Akta, AturanHukum, JenisTransaksi,
+   KomponenBiaya, Lembaga, ObjekHukum, StatusPenanganan) — tidak ada satu pun
+   axiom yang berubah, diff murni aditif (+21 baris).
+2. Diprioritaskan yang paling berguna buat masyarakat awam: komponen biaya
+   (PNBP, PPh, honor), objek hukum, status penanganan, dan acuan aturan
+   (fidusia, kawin, PT, tanah, waris Islam/perdata).
+3. Yang SENGAJA belum diperluas: `DokumenSyarat` dan `KasusTriage` di luar
+   domain union. Domain itu diperketat setelah review dosen (lihat entri
+   "Build fix — presisi model"), jadi melapasnya keputusan yang belum diambil
+   sendiri. Lemma `dok_*` dan `kasus_*` menunggu keputusan separately.
+4. Verifikasi: parse 1028 triple; swrl:Imp R1..R8 utuh; AllDisjointClasses
+   tetap 3; 31 kelas + 1 union, 16 object property, 10 data property, 79
+   individu; RL expand 1028→2209 tanpa error; CQ 10/10; demo 8/8.
