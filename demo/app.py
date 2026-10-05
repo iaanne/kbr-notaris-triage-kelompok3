@@ -110,7 +110,7 @@ def deteksi(cerita):
                         return "usaha_cv"
                     return "usaha_pt"  # default, dikoreksi saat slot pendiri diisi
                 return key
-    return "jualbeli"  # default paling umum
+    return None  # tak dikenali -> jangan asal jawab, tanya ulang (lihat main())
 
 def sapa_awal(need, info):
     judul = {"jualbeli": "jual-beli tanah", "waris_jual": "jual tanah warisan",
@@ -145,8 +145,6 @@ def putusan(need, data):
     sepakat = (data.get("sepakat") or "")
     if need in ("waris_jual", "waris_sengketa") and sepakat.startswith(("belum", "tidak", "t")) and "sudah" not in sepakat and "ya" not in sepakat:
         need = "waris_sengketa"
-    if need == "waris_jual" and data.get("skw", "").startswith(("belum", "t", "b")) and "sudah" not in data.get("skw", ""):
-        pass  # tetap waris_jual dengan status belum lengkap (sesuai R2)
     iri = CASE_IRI[need]
     info = ground_case(iri)
     return need, info
@@ -176,6 +174,10 @@ def main():
         print("BOT: Cerita kosong. Ulangi.")
         return
     need = deteksi(cerita)
+    if need is None:
+        print("BOT: Keperluan belum dikenali. Ceritakan ulang dengan kata yang lebih umum.")
+        print("     Contoh: 'mau jual tanah', 'warisan belum balik nama', 'mau bikin PT'.")
+        return
     if need == "usaha_pt":
         print("BOT: Untuk usaha, pastikan dulu jumlah pendirinya.")
     sapa_awal(need, None)

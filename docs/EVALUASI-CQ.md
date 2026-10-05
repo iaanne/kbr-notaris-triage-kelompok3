@@ -1,5 +1,5 @@
 # Evaluasi 10 CQ — hasil aktual (rdflib, 2026-10-05)
-Ontology: ontology/notaris-triage.ttl (1007 triple, 8 SWRL). Semua query mengembalikan baris.
+Ontology: ontology/notaris-triage.ttl (1028 triple, 8 SWRL). Semua query mengembalikan baris.
 
 | CQ | File | Hasil |
 |---|---|---|
