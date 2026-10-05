@@ -1,0 +1,10 @@
+PREFIX : <http://kbr.uns.ac.id/notaris-triage#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# CQ7: Mau buat wasiat — syarat dan akta apa?
+SELECT ?kasus ?aktaLabel ?saran WHERE {
+  ?kasus :punyaJenis :trans_wasiat ;
+          :butuhAkta ?akta ;
+          :saranLangkah ?saran .
+  ?akta rdfs:label ?aktaLabel .
+}

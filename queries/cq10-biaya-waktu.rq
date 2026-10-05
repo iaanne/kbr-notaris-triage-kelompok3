@@ -1,0 +1,11 @@
+PREFIX : <http://kbr.uns.ac.id/notaris-triage#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# CQ10: Estimasi langkah, waktu, biaya untuk kasus saya?
+SELECT ?kasusLabel ?saran ?waktu ?biaya WHERE {
+  ?kasus rdfs:label ?kasusLabel ;
+          :saranLangkah ?saran .
+  OPTIONAL { ?kasus :perkiraanWaktu ?waktu . }
+  OPTIONAL { ?kasus :perkiraanBiaya ?biaya . }
+}
+ORDER BY ?kasusLabel

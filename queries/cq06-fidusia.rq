@@ -1,0 +1,12 @@
+PREFIX : <http://kbr.uns.ac.id/notaris-triage#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# CQ6: Utang dengan jaminan motor — perlu fidusia?
+SELECT ?kasus ?aktaLabel ?lembagaLabel ?saran WHERE {
+  ?kasus :punyaJenis :trans_utangJaminan ;
+          :butuhAkta ?akta ;
+          :ditanganiOleh ?lembaga ;
+          :saranLangkah ?saran .
+  ?akta rdfs:label ?aktaLabel .
+  ?lembaga rdfs:label ?lembagaLabel .
+}

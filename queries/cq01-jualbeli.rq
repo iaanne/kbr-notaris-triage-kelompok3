@@ -1,0 +1,13 @@
+PREFIX : <http://kbr.uns.ac.id/notaris-triage#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# CQ1: Saya mau jual tanah SHM — harus ke mana, akta apa?
+SELECT ?kasus ?lembagaLabel ?aktaLabel ?statusLabel WHERE {
+  ?kasus :punyaJenis :trans_jualBeli ;
+          :ditanganiOleh ?lembaga ;
+          :butuhAkta ?akta ;
+          :berstatus ?status .
+  ?lembaga rdfs:label ?lembagaLabel .
+  ?akta rdfs:label ?aktaLabel .
+  ?status rdfs:label ?statusLabel .
+}

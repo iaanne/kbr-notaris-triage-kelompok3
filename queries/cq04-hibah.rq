@@ -1,0 +1,12 @@
+PREFIX : <http://kbr.uns.ac.id/notaris-triage#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# CQ4: Hibah tanah ke anak — akta, biaya, daftar di mana?
+SELECT ?kasus ?aktaLabel ?biayaLabel ?daftarLabel WHERE {
+  ?kasus :punyaJenis :trans_hibah ;
+          :butuhAkta ?akta ;
+          :dikenaiBiaya ?biaya .
+  ?akta rdfs:label ?aktaLabel .
+  ?biaya rdfs:label ?biayaLabel .
+  OPTIONAL { ?akta :perluDaftarDi ?d . ?d rdfs:label ?daftarLabel . }
+}

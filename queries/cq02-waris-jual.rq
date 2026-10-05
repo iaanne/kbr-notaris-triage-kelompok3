@@ -1,0 +1,12 @@
+PREFIX : <http://kbr.uns.ac.id/notaris-triage#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# CQ2: Tanah warisan belum balik nama mau dijual — urutan dan kurang apa?
+SELECT ?kasus ?statusLabel ?kurangLabel ?saran WHERE {
+  ?kasus :punyaJenis :trans_warisJual ;
+          :berstatus ?status ;
+          :butuhDokumen ?kurang ;
+          :saranLangkah ?saran .
+  ?status rdfs:label ?statusLabel .
+  ?kurang rdfs:label ?kurangLabel .
+}

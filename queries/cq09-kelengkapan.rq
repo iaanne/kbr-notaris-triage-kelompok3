@@ -1,0 +1,12 @@
+PREFIX : <http://kbr.uns.ac.id/notaris-triage#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# CQ9: Dokumen saya kurang apa? Status siap atau belum?
+SELECT ?kasusLabel ?statusLabel ?kurangLabel ?sudahLabel WHERE {
+  ?kasus rdfs:label ?kasusLabel ;
+          :berstatus ?status .
+  ?status rdfs:label ?statusLabel .
+  OPTIONAL { ?kasus :butuhDokumen ?k . ?k rdfs:label ?kurangLabel . }
+  OPTIONAL { ?kasus :sudahPunyaDokumen ?s . ?s rdfs:label ?sudahLabel . }
+}
+ORDER BY ?kasusLabel

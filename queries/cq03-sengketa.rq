@@ -1,0 +1,12 @@
+PREFIX : <http://kbr.uns.ac.id/notaris-triage#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# CQ3: Ahli waris tidak sepakat — jalurnya ke mana?
+SELECT ?kasus ?lembagaLabel ?statusLabel ?saran WHERE {
+  ?kasus :adaSepakat false ;
+          :ditanganiOleh ?lembaga ;
+          :berstatus ?status ;
+          :saranLangkah ?saran .
+  ?lembaga rdfs:label ?lembagaLabel .
+  ?status rdfs:label ?statusLabel .
+}

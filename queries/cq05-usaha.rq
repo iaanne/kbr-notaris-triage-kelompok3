@@ -1,0 +1,12 @@
+PREFIX : <http://kbr.uns.ac.id/notaris-triage#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# CQ5: Mau usaha kecil — pilih PT perorangan, PT biasa, atau CV?
+SELECT ?kasus ?kasusLabel ?aktaLabel ?saran WHERE {
+  ?kasus :punyaJenis :trans_dirikanUsaha ;
+          :butuhAkta ?akta ;
+          :saranLangkah ?saran .
+  ?kasus rdfs:label ?kasusLabel .
+  ?akta rdfs:label ?aktaLabel .
+}
+ORDER BY ?kasusLabel

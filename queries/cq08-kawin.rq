@@ -1,0 +1,11 @@
+PREFIX : <http://kbr.uns.ac.id/notaris-triage#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# CQ8: Perjanjian pisah harta — bisa di notaris?
+SELECT ?kasus ?aktaLabel ?daftarLabel ?saran WHERE {
+  ?kasus :punyaJenis :trans_kawinHarta ;
+          :butuhAkta ?akta ;
+          :saranLangkah ?saran .
+  ?akta rdfs:label ?aktaLabel .
+  OPTIONAL { ?akta :perluDaftarDi ?d . ?d rdfs:label ?daftarLabel . }
+}
