@@ -25,7 +25,7 @@ def ground_case(case_iri):
     """Ambil fakta ground-truth satu kasus dari ontology."""
     short = case_iri.split("#")[-1]
     Q = f"""
-    PREFIX : <http://kbr.uns.ac.id/notaris-triage#>
+    PREFIX : <http://www.semanticweb.org/iaanne/ontologies/2026/notaris-triage#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?lembaga ?akta ?status ?saran ?waktu ?biaya WHERE {{
       :{short} :ditanganiOleh ?l ; :butuhAkta ?a ; :berstatus ?s ; :saranLangkah ?saran .
@@ -35,7 +35,7 @@ def ground_case(case_iri):
     }}"""
     rows = q1(Q)
     docs_q = f"""
-    PREFIX : <http://kbr.uns.ac.id/notaris-triage#>
+    PREFIX : <http://www.semanticweb.org/iaanne/ontologies/2026/notaris-triage#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?d WHERE {{ :{short} :butuhDokumen ?x . ?x rdfs:label ?d . }}"""
     docs = sorted({str(r[0]) for r in q1(docs_q)})

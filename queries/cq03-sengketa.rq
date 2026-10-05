@@ -1,4 +1,4 @@
-PREFIX : <http://kbr.uns.ac.id/notaris-triage#>
+PREFIX : <http://www.semanticweb.org/iaanne/ontologies/2026/notaris-triage#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 # CQ3: Ahli waris tidak sepakat — jalurnya ke mana?
