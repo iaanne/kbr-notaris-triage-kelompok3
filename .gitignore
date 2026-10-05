@@ -20,3 +20,7 @@ Thumbs.db
 
 # Protege
 catalog-v001.xml
+
+# Protege accidental saves
+v1.rdf
+v2.rdf
