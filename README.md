@@ -1,7 +1,4 @@
 # Notaris Triage
-Parafrase orisinal dari ide B-Team 3. Stakeholder: masyarakat awam.
-Notaris/PPAT diposisikan sebagai sumber pengetahuan (desk research regulasi),
-bukan pengguna. Validasi wawancara notaris opsional menyusul bila diminta dosen.
 
 ## Isi
 - `ontology/notaris-triage.ttl` — OWL DL (31 kelas + 1 union, 16 object property, 10 data property,
