@@ -1,4 +1,4 @@
-# Notaris Triage — pendamping awam sampai tuntas (KBR)
+# Notaris Triage
 Parafrase orisinal dari ide B-Team 3. Stakeholder: masyarakat awam.
 Notaris/PPAT diposisikan sebagai sumber pengetahuan (desk research regulasi),
 bukan pengguna. Validasi wawancara notaris opsional menyusul bila diminta dosen.
